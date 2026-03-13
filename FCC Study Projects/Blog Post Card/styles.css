@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+.blog-post-card {
+  background-color: white;
+  border-radius: 25px;
+  width: 300px;
+  text-align: center;
+  margin: 50px auto;
+  overflow: hidden;
+}
+
+.post-img {
+  background-size: contain;
+  max-height: 200px;
+  border-bottom: 2px solid black;
+}
+
+.post-content {
+  padding: 10px;
+}
+
+.post-title, .post-excerpt {
+  color: navy;
+  margin: 5px;
+}
+
+.read-more {
+  color: white; 
+  background-color: black;
+  margin: 10px;
+  padding: 5px 25px;
+  border-radius: 25px;
+  display: inline-block; /* ถ้าอันนี้ไม่ใช้ inline-block จะตัวติดกับ  content ข้างบนทันที ใช้ margin สร้างระยะไม่ได้ (width&height) */
+  text-decoration: none;
+}
+
+.read-more:hover {
+  background-color: gold;
+}
