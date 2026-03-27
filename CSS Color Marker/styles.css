@@ -43,3 +43,38 @@ h1 {
   background: linear-gradient(hsl(186, 76%, 16%), hsl(223, 90%, 60%), hsl(240, 56%, 42%));
   box-shadow: 0 0 20px 0 blue;
 }
+
+body {
+  background-color: #f4f4f4;
+}
+
+.color-grid {
+  display: flex;
+}
+
+.color-box {
+  width: 60px;
+  height: 60px;
+  margin: 25px;
+  border-radius: 10px;
+}
+
+.color1 {
+  background-color: #ff1244;
+}
+
+.color2 {
+  background-color: rgb(142, 255, 169);
+}
+
+.color3 {
+  background-color: cyan;
+}
+
+.color4 {
+  background-color: hsl(280, 90%, 60%);
+}
+
+.color5 {
+  background-color: tomato;
+}
