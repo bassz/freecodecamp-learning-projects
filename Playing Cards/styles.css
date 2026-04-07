@@ -31,3 +31,7 @@
   flex-direction: column-reverse;
   transform: rotate(180deg);
 }
+
+body {
+  background-color: whitesmoke;
+}
