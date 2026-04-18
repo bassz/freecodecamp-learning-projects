@@ -10,31 +10,85 @@
     <h1>Being a Developer in 2026 with Claude</h1>
     <!-- Doc-structure = introduction > core concepts > key features > best practices > limitation -->
     <main id="main-doc">
+
       <section class="main-section" id="introduction">
-        <header>Introduction</header>
-        <p>In 2026, software development has evolved into a collaborative process between humans and AI. Tools like Claude are now integrated into daily workflows, helping developers write, analyze, and improve code more efficiently. This shift has significantly reduced the time required to build and maintain applications.</p>
-        <p>Rather than replacing developers, AI enhances their capabilities. Developers are now expected to focus more on problem-solving, architecture, and decision-making, while AI handles repetitive and time-consuming tasks. This transformation has redefined what it means to be a modern developer.</p>
+        <header><h2>Introduction</h2></header>
+        <p>Most developers interact with Git through high-level commands like <code>git commit</code>, <code>git push</code>, and <code>git merge</code>. But beneath these familiar porcelain commands lies a powerful content-addressable filesystem — one that's surprisingly simple once you understand its core model.</p>
+        <p>Git stores everything in a directory called <code>.git/</code> at the root of your repository. Inside it, you'll find objects, references, configuration, and more. Understanding this structure demystifies almost every confusing Git behaviour you've encountered.</p>
+      <div class="callout">
+        <div class="callout-title">Why learn internals?</div>
+        <p>When a rebase goes wrong or a merge produces unexpected conflicts, understanding the object model lets you inspect and repair state directly — instead of guessing with high-level commands.</p>
+      </div>
       </section>
-      <section class="main-section" id="ai-assisted_developement">
-        <header>AI-Assisted Development</header>
-        <p>AI-assisted development introduces a new workflow built around interaction with intelligent systems. Developers provide structured prompts, receive generated outputs, and refine them iteratively. This process emphasizes clarity of communication and logical thinking.</p>
-        <p>Key concepts include prompt engineering and context management. Writing precise instructions ensures better results, while providing sufficient context helps AI generate accurate and relevant responses. Without these, outputs may become inconsistent or misleading.</p>
+
+      <section class="main-section" id="git_object_model">
+        <header><h2>Git Object Model</h2></header>
+        <p>At its core, Git is a key-value store. Every piece of content is hashed with <code>SHA-1</code> (transitioning to <code>SHA-256</code> in newer versions), and stored as an object. There are exactly four object types:</p>
+        <table>
+          <thead>
+            <tr>
+             <th>Type</th>
+             <th>Stores</th>
+             <th>Contains</th>
+            </tr>
+          </thead>
+          <tbody>
+           <tr>
+              <td><code>blob</code></td>
+             <td>File content</td>
+             <td>Raw bytes of a file at a point in time</td>
+           </tr>
+           <tr>
+              <td><code>tree</code></td>
+              <td>Directory listing</td>
+              <td>Pointers to blobs and other trees</td>
+           </tr>
+            <tr>
+             <td><code>commit</code></td>
+             <td>Snapshot metadata</td>
+              <td>Tree pointer, parent, author, message</td>
+           </tr>
+            <tr>
+              <td><code>tag</code></td>
+              <td>Named reference</td>
+              <td>Points to any object with extra metadata</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>All objects are stored under <code>.git/objects/</code>. The first two hex characters of the hash become a subdirectory; the remaining 38 form the filename.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="filename">.git/objects/</span>
+            <span class="lang-badge">filesystem</span>
+            <pre>.git/objects/
+├── 4b/
+│   └── 825dc642cb6eb9a060e54bf8d69288fbee4904  <span class="cm"># empty tree</span>
+├── a1/
+│   └── f3c9e2b84d0e67f21ac98302de4a5e1c70b3d1  <span class="cm"># a blob</span>
+└── pack/
+    └── *.pack                                  <span class="cm"># packed objects</span></pre>
+          </div>
+        </div>
       </section>
+
       <section class="main-section" id="using_claude_in_real_development">
-        <header>Using Claude in Real Development</header>
+        <header><h2>Blobs &amp; Trees</h2></header>
         <p>Developers use Claude to accelerate various stages of development, including writing boilerplate code, debugging errors, and refactoring existing logic. It can quickly analyze problems and suggest solutions, making it a valuable productivity tool.</p>
         <p>In addition, AI can act as a learning assistant by explaining complex topics and providing examples. This allows developers to acquire new skills faster and experiment with unfamiliar technologies without relying solely on documentation.</p>
       </section>
+
       <section class="main-section" id="best_practices_for_using_ai">
         <header>Best Practices for Using AI</header>
         <p>To use AI effectively, developers should treat it as a junior collaborator rather than an authoritative source. AI-generated code must always be reviewed and tested to ensure correctness, security, and performance.</p>
         <p>Breaking problems into smaller steps and writing clear, specific prompts can significantly improve output quality. Developers who actively guide and refine AI responses will achieve more reliable and maintainable results.</p>
       </section>
+
       <section class="main-section" id="limitations_and_future">
         <header>Limitations and Future</header>
         <p>Despite its advantages, AI still has limitations. It may generate incorrect or misleading information, especially when given vague instructions or insufficient context. Developers must remain critical and verify all outputs before using them in production.</p>
         <p>Looking ahead, AI will continue to evolve and become more integrated into development workflows. However, core skills such as system design, critical thinking, and problem-solving will remain essential. Developers who can effectively combine these skills with AI tools will have a strong advantage in the industry.</p>
       </section>
+
     </main>
   </body>
 </html>
