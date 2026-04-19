@@ -8,9 +8,15 @@
 
   <body>
     <h1>Being a Developer in 2026 with Claude</h1>
-    <!-- Doc-structure = introduction > core concepts > key features > best practices > limitation -->
-    <main id="main-doc">
 
+    <!-- sidebar -->
+    <nav>
+      
+    </nav>
+    
+    <hr class="section-divider">
+
+    <main id="main-doc">
       <section class="main-section" id="introduction">
         <header><h2>Introduction</h2></header>
         <p>Most developers interact with Git through high-level commands like <code>git commit</code>, <code>git push</code>, and <code>git merge</code>. But beneath these familiar porcelain commands lies a powerful content-addressable filesystem — one that's surprisingly simple once you understand its core model.</p>
@@ -20,6 +26,8 @@
         <p>When a rebase goes wrong or a merge produces unexpected conflicts, understanding the object model lets you inspect and repair state directly — instead of guessing with high-level commands.</p>
       </div>
       </section>
+
+      <hr class="section-divider">
 
       <section class="main-section" id="git_object_model">
         <header><h2>Git Object Model</h2></header>
@@ -71,22 +79,203 @@
         </div>
       </section>
 
-      <section class="main-section" id="using_claude_in_real_development">
+      <hr class="section-divider">
+
+      <section class="main-section" id="Blobs_&amp;_Trees">
         <header><h2>Blobs &amp; Trees</h2></header>
-        <p>Developers use Claude to accelerate various stages of development, including writing boilerplate code, debugging errors, and refactoring existing logic. It can quickly analyze problems and suggest solutions, making it a valuable productivity tool.</p>
-        <p>In addition, AI can act as a learning assistant by explaining complex topics and providing examples. This allows developers to acquire new skills faster and experiment with unfamiliar technologies without relying solely on documentation.</p>
+        <p>A blob stores the raw contents of a file — no filename, no permissions, just bytes. Two files with identical contents will always share the same blob hash. This is how Git deduplicates data.</p>
+        <p>You can create a blob manually using the git hash-object plumbing command:</p>
+        <div class="terminmal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span class="terminal-title">Bash</span>
+            <pre><span class="prompt">$ </span><span class="cmd">echo "Hello, Git" | git hash-object --stdin -w</span>
+<span class="hash">8ab686eafeb1f44702738c8b0f24f2567c36da6d</span>
+
+<span class="prompt">$ </span><span class="cmd">git cat-file -t 8ab686ea</span>
+<span class="out">blob</span>
+
+<span class="prompt">$ </span><span class="cmd">git cat-file -p 8ab686ea</span>
+<span class="out">Hello, Git</span></pre>
+          </div>
+
+          <p>A <strong>tree</strong> represents a directory. Each entry has a mode, a type, a hash, and a name. The mode <code>100644</code> indicates a regular file, while <code>040000</code> indicates a subdirectory (another tree).</p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="filename">tree object contents</span>
+              <span class="lang-badge">output</span>
+            </div>
+            <pre><span class="fn">100644</span> <span class="kw">blob</span> <span class="num">a1f3c9e2b84d...</span>    README.md
+<span class="fn">100644</span> <span class="kw">blob</span> <span class="num">8ab686eafeb1...</span>    main.go
+<span class="fn">040000</span> <span class="kw">tree</span> <span class="num">c3d4e5f60718...</span>    src/</pre>
+          </div>
       </section>
 
-      <section class="main-section" id="best_practices_for_using_ai">
-        <header>Best Practices for Using AI</header>
-        <p>To use AI effectively, developers should treat it as a junior collaborator rather than an authoritative source. AI-generated code must always be reviewed and tested to ensure correctness, security, and performance.</p>
-        <p>Breaking problems into smaller steps and writing clear, specific prompts can significantly improve output quality. Developers who actively guide and refine AI responses will achieve more reliable and maintainable results.</p>
+      <hr class="section-divider">
+
+      <section class="main-section" id="commits">
+        <header><h2>Commits</h2></header>
+        <p>A commit object ties everything together. It points to a single root <code>tree</code>, lists zero or more <code>parent</code> commits, and stores author metadata. The commit hash changes if any of these fields change — which is why amending a commit produces a new hash.</p>
+        <div class="object-diagram">
+          <div class="obj-box">
+            <div class="obj-box-header">commit abc123</div>
+            <div class="obj-box-body">
+              <span class="field-name">tree</span>   <span class="field-val">f7a3b1...</span><br>
+              <span class="field-name">parent</span> <span class="field-val">e91d44...</span><br>
+              <span class="field-name">author</span> <span class="field-val">Ana M.</span><br>
+              <span class="field-name">date</span>   <span class="field-val">2026-04-18</span>
+            </div>
+          </div>
+          <div class="obj-arrow"></div>
+          <div class="obj-box">
+            <div class="obj-box-header">tree f7a3b1</div>
+            <div class="obj-box-body">
+              <span class="field-name">blob</span> <span class="field-val">a1f3c9 README</span><br>
+              <span class="field-name">blob</span> <span class="field-val">8ab686 main.go</span><br>
+              <span class="field-name">tree</span> <span class="field-val">c3d4e5 src/</span>
+            </div>
+          </div>
+          <div class="obj-arrow"></div>
+          <div class="obj-box">
+            <div class="obj-box-header">blob a1f3c9</div>
+            <div class="obj-box-body">
+              <span style="color:rgba(255,255,255,0.3); font-style:italic; font-size:11px;">raw file bytes...</span>
+            </div>
+          </div>
+        </div>
+
+        <p>The raw commit object can be inspected with <code>git cat-file -p HEAD</code>, which prints the tree hash, parent hashes, author/committer lines, and commit message.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="file-name">raw commit object</div>
+            <div class="lang-badge">git</div>
+            <pre><span class="kw">tree</span>   <span class="num">f7a3b1d8e29c4a5601fe8d72b3c94f015a8e7bcd</span>
+<span class="kw">parent</span> <span class="num">e91d449cba2f3c78a1d06e5b48f9320c1a7e4583</span>
+<span class="kw">author</span>     Ana Martinez &lt;ana@example.com&gt; <span class="num">1713398400</span> <span class="str">+0700</span>
+<span class="kw">committer</span>  Ana Martinez &lt;ana@example.com&gt; <span class="num">1713398400</span> <span class="str">+0700</span>
+ 
+<span class="cm">Add initial project structure</span></pre>
+      </div>
       </section>
 
-      <section class="main-section" id="limitations_and_future">
-        <header>Limitations and Future</header>
-        <p>Despite its advantages, AI still has limitations. It may generate incorrect or misleading information, especially when given vague instructions or insufficient context. Developers must remain critical and verify all outputs before using them in production.</p>
-        <p>Looking ahead, AI will continue to evolve and become more integrated into development workflows. However, core skills such as system design, critical thinking, and problem-solving will remain essential. Developers who can effectively combine these skills with AI tools will have a strong advantage in the industry.</p>
+      <hr class="section-divider">
+
+      <section class="main-section" id="References">
+        <header><h2>References</h2></header>
+        <p>Hashes are unwieldy. Git solves this with references — named pointers stored as plain text files inside <code>.git/refs/</code>. A branch is simply a file containing a 40-character commit hash.</p>
+        <div class="terminmal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span class="terminal-title">Bash</span>
+            <pre><span class="prompt">$ </span><span class="cmd">cat .git/refs/heads/main</span>
+<span class="hash">abc123f4e5d6c7b8a9012345678901234567890a</span>
+
+<span class="prompt">$ </span><span class="cmd">cat .git/HEAD</span>
+<span class="out">ref: refs/heads/main</span></pre>
+          </div>
+          <p>The special reference <code>HEAD</code> usually points to a branch (attached state). When you check out a specific commit hash, <code>HEAD</code> stores the hash directly — this is the infamous "detached HEAD" state.</p>
+          <h3>Symbolic refs</h3>
+          <p>References like <code>MERGE_HEAD</code>, <code>ORIG_HEAD</code>, and <code>CHERRY_PICK_HEAD</code> are temporary refs Git creates during in-progress operations. You can inspect them the same way — they're just files.</p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section class="main-section" id="plumbing_commands">
+        <header><h2>Plumbing Commands</h2></header>
+        <p>Git distinguishes between <i>porcelain</i> (user-facing) and <i>plumbing</i> (low-level) commands. Plumbing commands operate directly on objects and refs — they're the building blocks that porcelain commands use internally.
+
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>git cat-file</code></td>
+              <td>Inspect object type, size, or content</td>
+            </tr>
+            <tr>
+              <td><code>git hash-object</code></td>
+              <td>Compute hash and optionally write an object</td>
+            </tr>
+            <tr>
+              <td><code>git ls-tree</code></td>
+              <td>List contents of a tree object</td>
+            </tr>
+            <tr>
+              <td><code>git rev-parse</code></td>
+              <td>Resolve refs and expressions to hashes</td>
+            </tr>
+            <tr>
+              <td><code>git update-ref</code></td>
+              <td>Safely update a reference file</td>
+            </tr>
+            <tr>
+              <td><code>git write-tree</code></td>
+              <td>Create a tree object from the index</td>
+            </tr>
+            <div class="callout">
+              <div class="callout-title">Tip</div>
+              <p>You can chain plumbing commands to walk the full object graph: <code>git rev-parse HEAD</code> → <code>git cat-file -p &lt;hash&gt;</code> → <code>git ls-tree &lt;tree-hash&gt;</code>.</p>
+            </div>
+          </tbody>
+        </table>
+      </section>
+
+      <hr class="section-divider">
+
+      <section class="main-section" id="packfiles">
+        <header><h2>Packfiles</h2></header>
+        <p>Storing every version of every file as a separate loose object would be wasteful. Git periodically runs garbage collection (<code>git gc</code>) to combine loose objects into binary packfiles, stored under <code>.git/objects/pack/</code>.</p>
+        <p>Each packfile (<code>.pack</code>) is accompanied by an index (<code>.idx</code>) for fast random access. Within the pack, objects are delta-compressed against similar objects — a one-line change to a 10,000-line file stores only the delta, not the full content.</p>
+        <div class="code-block">
+          <div class="code-block-title">inspect a packfile</div>
+          <div class="lang-name">bash</div>
+          <pre><span class="cm"># List objects in a packfile</span>
+<span class="fn">git</span> verify-pack -v .git/objects/pack/<span class="str">*.idx</span>
+ 
+<span class="cm"># Repack with aggressive delta compression</span>
+<span class="fn">git</span> repack -a -d --depth=<span class="num">50</span> --window=<span class="num">250</span>
+ 
+<span class="cm"># Show packfile statistics</span>
+<span class="fn">git</span> count-objects -vH</pre>
+        </div>
+        <p>When you clone a repository, Git sends exactly one packfile over the wire — containing all the objects needed to reconstruct every requested ref. This is why <code>git clone</code> is a single network round-trip.</p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section class="main-section" id="why_it_matters">
+        <header><h2>Why It Matters</h2></header>
+        <ul>
+          <li>
+            <strong>Fearless debugging</strong>
+            <span>When a rebase, merge, or reset goes wrong, you can drop down to <code>git cat-file</code> and <code>git ls-tree</code> to inspect the raw object graph — instead of blindly running <code>git reflog</code> and hoping for the best.</span>
+          </li>
+          <li>
+            <strong>Confident data recovery</strong>
+            <span>Because Git almost never deletes objects immediately, understanding loose objects and packfiles means you can recover "lost" commits, blobs, and branches long after they disappear from the visible history.</span>
+          </li>
+          <li>
+            <strong>Faster repository maintenance</strong>
+            <span>Knowing when and why to run <code>git gc</code> or <code>git repack</code> lets you keep repository size under control — especially important for large repos with binary assets or long histories.</spam>
+          </li>
+          <li>
+            <strong>Cleaner mental model of branching</strong>
+            <span>Once you see that a branch is just a file with a hash inside <code>.git/refs/heads/</code>, branching and merging stop being magic. You understand exactly what <code>git switch</code>, <code>git reset</code>, and <code>git cherry-pick</code> are actually doing to refs and the object store.</spam>
+          </li>
+          <li>
+            <strong>Better tooling and automation</strong>
+            <span>Plumbing commands are stable, scriptable, and designed for machine consumption. Building CI scripts, custom hooks, or repository analysis tools becomes far more reliable when you use <code>git rev-parse</code> and <code>git for-each-ref</code> instead of parsing porcelain output.</spam>
+          </li>
+        </ul>
       </section>
 
     </main>
