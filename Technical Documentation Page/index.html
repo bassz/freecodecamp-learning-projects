@@ -10,7 +10,35 @@
     <h1>Being a Developer in 2026 with Claude</h1>
 
     <!-- sidebar -->
-    <nav>
+    <nav id="navbar">
+      <header class="nav-brand">
+        <span class="logo">Technical Docs</span>
+        <h2>Git Internals</h2>
+      </header>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Overview</span>
+        <a href="#introduction" class="active nav-link">Introduction</a>
+        <a href="#git_object_model" class="nav-link">Git Object Model</a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Core Concepts</span>
+        <a href="#blobs_&amp;_trees" class="nav-link">Blobs & Trees</a>
+        <a href="#commits" class="nav-link">Commits</a>
+        <a href="#references" class="nav-link">References</a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Advanced</span>
+        <a href="#plumbing_commands" class="nav-link">Plumbing Commands</a>
+        <a href="#packfiles" class="nav-link">Packfiles</a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Closing</span>
+        <a href="why_it_matters" class="nav-link">Why It Matters</a>
+      </div>
       
     </nav>
     
@@ -81,7 +109,7 @@
 
       <hr class="section-divider">
 
-      <section class="main-section" id="Blobs_&amp;_Trees">
+      <section class="main-section" id="blobs_&amp;_trees">
         <header><h2>Blobs &amp; Trees</h2></header>
         <p>A blob stores the raw contents of a file — no filename, no permissions, just bytes. Two files with identical contents will always share the same blob hash. This is how Git deduplicates data.</p>
         <p>You can create a blob manually using the git hash-object plumbing command:</p>
@@ -163,7 +191,7 @@
 
       <hr class="section-divider">
 
-      <section class="main-section" id="References">
+      <section class="main-section" id="references">
         <header><h2>References</h2></header>
         <p>Hashes are unwieldy. Git solves this with references — named pointers stored as plain text files inside <code>.git/refs/</code>. A branch is simply a file containing a 40-character commit hash.</p>
         <div class="terminmal">

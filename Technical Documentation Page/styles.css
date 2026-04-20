@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+    :root { --nav-w: 0px; }
+}
+ 
+ *, *::before, *::after { 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
