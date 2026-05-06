@@ -1,0 +1,40 @@
+.center {
+    text-align: center;
+}
+
+body {
+    background-color: whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    background-color: white;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 5px 3px gray;
+    padding: 20px 30px;
+    margin: 20px auto;
+}
+
+label:not(.radio-group label) {
+    display: block;
+}
+
+:is(input, textarea) {
+    border-color: red;
+}
+
+input[type="radio"]:checked + label {
+    color: green;
+}
+
+input:not(input[type="radio"]) {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    background-color: #ffffff1a;
+}
+
