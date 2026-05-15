@@ -4,14 +4,24 @@ const fortune3 = "Be cautious of your new neighbors.";
 const fortune4 = "You will find a new hobby soon.";
 const fortune5 = "It would be wise to avoid the color red today.";
 
-const randomNumber = Math.round(Math.random() * 4) + 1;
+const randomNumber = Math.floor(Math.random() * 5) + 1;
 
+let selectedFortune;
 
+if (randomNumber === 1) {
+  selectedFortune = fortune1;
+}
+else if (randomNumber === 2) {
+  selectedFortune = fortune2;
+}
+else if (randomNumber === 3) {
+  selectedFortune = fortune3;
+}
+else if (randomNumber === 4) {
+  selectedFortune = fortune4;
+}
+else if (randomNumber === 5) {
+  selectedFortune = fortune5;
+}
 
-// test ตัวอย่าง //
-let score = 101;
-
-if (score >= 90) { console.log("ยอดเยี่ยม"); }
-else if (score >= 80) { console.log("เก่ง"); }
-else if (score >= 50) { console.log("ผ่าน"); }
-else { console.log("ไม่ผ่าน"); }
+console.log(selectedFortune);
