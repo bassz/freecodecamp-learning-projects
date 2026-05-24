@@ -47,3 +47,9 @@ function getRandomLunch(lunches) {
     return lunches
   }
 }
+
+
+const min = 1;
+const max = 100;
+const randomNum2 = Math.random() * (max - min) + min;
+console.log(randomNum2);
