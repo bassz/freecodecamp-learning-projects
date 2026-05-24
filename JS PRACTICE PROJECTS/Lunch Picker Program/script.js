@@ -43,13 +43,21 @@ function getRandomLunch(lunches) {
     console.log("No lunches available.");
     return lunches;
   } else {
-    console.log(`Randomly selected lunch: ${lunches}`);
+    console.log(`Randomly selected lunch: ${lunches[Math.floor(Math.random() * lunches.length)]}`);
     return lunches
   }
 }
+getRandomLunch(["Sushi", "Pizza", "Burger"]);
 
+function showLunchMenu(lunches) {
+  if (lunches.length === 0) {
+    console.log("The menu is empty.");
+    return lunches;
+  } else {
+    console.log(`Menu items: ${lunches.join(", ")}`);
+    return lunches;
+  }
+}
 
-const min = 1;
-const max = 100;
-const randomNum2 = Math.random() * (max - min) + min;
-console.log(randomNum2);
+showLunchMenu(["Greens", "Corns", "Beans"]);
+showLunchMenu(["Pizza", "Burger", "Fries", "Salad"]);
