@@ -1,0 +1,49 @@
+function normalizeUnits(manifest) {
+  if (manifest.unit === "lb") {
+    return { ...manifest, weight: manifest.weight * 0.45, unit: "kg"};
+  }
+  return { ...manifest};
+}
+
+/* function normalizeUnits() แปลงหน่วยปอนด์เป็นกิโลโดยการ n*0.45 และเปลี่ยนหน่วย lb เป็น kg โดยที่ไม่ mutate ตัว source manifest โดยการใช้ ...manifest เรียกว่า spread
+------------------
+const manifest1 = { containerId: 68, destination: "Salinas", weight: 101, unit: "lb", hazmat: true };
+console.log(normalizeUnits(manifest1));
+-----------------
+*/
+
+function validateManifest(manifest) {
+  const errors = {};
+
+  if (!("containerId" in manifest)) {
+    errors.containerId = "Missing";
+  } else if (containerId <= 0) {
+    errors.containerId = "Invalid";
+  }
+
+  if (!("destination" in manifest)) {
+    errors.destination = "Missing";
+  } else if (destination === null) {
+    errors.destination = "Invalid";
+  }
+
+  if (!("weight" in manifest)) {
+    errors.weight = "Missing";
+  } else if (weight === null) {
+    errors.weight = "Invalid";
+  }
+
+  if (!("unit" in manifest)) {
+    errors.unit = "Missing";
+  } else if (unit === null) {
+    errors.unit = "Invalid";
+  }
+
+  if (!("hazmat" in manifest)) {
+    errors.hazmat = "Missing";
+  } else if (hazmat === null) {
+    errors.hazmat = "Invalid";
+  }
+
+  return errors;
+}
