@@ -6,11 +6,12 @@ function normalizeUnits(manifest) {
 }
 
 /* function normalizeUnits() แปลงหน่วยปอนด์เป็นกิโลโดยการ n*0.45 และเปลี่ยนหน่วย lb เป็น kg โดยที่ไม่ mutate ตัว source manifest โดยการใช้ ...manifest เรียกว่า spread
+
 ------------------
+
 const manifest1 = { containerId: 68, destination: "Salinas", weight: 101, unit: "lb", hazmat: true };
 
 console.log(normalizeUnits(manifest1));
------------------
 */
 
 function validateManifest(manifest) {
@@ -18,7 +19,7 @@ function validateManifest(manifest) {
 
   if (!("containerId" in manifest)) {
     errors.containerId = "Missing";
-  } else if (manifest.containerId <= 0) {
+  } else if (manifest.containerId <= 0 || !Number.isInteger(manifest.containerId)) {
     errors.containerId = "Invalid";
   }
 
@@ -30,7 +31,7 @@ function validateManifest(manifest) {
 
   if (!("weight" in manifest)) {
     errors.weight = "Missing";
-  } else if (manifest.weight <= 0) {
+  } else if (manifest.weight <= 0 || Number.isNaN(manifest.weight)) {
     errors.weight = "Invalid";
   }
 
@@ -49,6 +50,19 @@ function validateManifest(manifest) {
   return errors;
 }
 
+/*
+เทส function validateManifest()
+-------------------------
 const manifest1 = { containerId: 0, destination: 405, weight: -84, unit: "pounds", hazmat: "no" };
 
 console.log(validateManifest(manifest1));
+*/
+
+function processManifest(manifest) {
+  console.log("Validation success: " + manifest.containerId);
+  
+}
+
+const manifest1 = { containerId: 55, destination: "Carmel", weight: 400, unit: "lb", hazmat: false };
+
+console.log(processManifest(manifest1));
