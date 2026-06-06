@@ -3,20 +3,10 @@ function normalizeUnits(manifest) {
     return { ...manifest, weight: manifest.weight * 0.45, unit: "kg"};
   }
   return { ...manifest};
-}
-
-/* function normalizeUnits() แปลงหน่วยปอนด์เป็นกิโลโดยการ n*0.45 และเปลี่ยนหน่วย lb เป็น kg โดยที่ไม่ mutate ตัว source manifest โดยการใช้ ...manifest เรียกว่า spread
-
-------------------
-
-const manifest1 = { containerId: 68, destination: "Salinas", weight: 101, unit: "lb", hazmat: true };
-
-console.log(normalizeUnits(manifest1));
-*/
+}//* function normalizeUnits() แปลงหน่วยปอนด์เป็นกิโลโดยการ n*0.45 และเปลี่ยนหน่วย lb เป็น kg โดยที่ไม่ mutate ตัว source manifest โดยการใช้ ...manifest ("..." เรียกว่า spread)
 
 function validateManifest(manifest) {
-  const errors = {}
-
+  const errors = {};
   if (!("containerId" in manifest)) {
     errors.containerId = "Missing";
   } else if (manifest.containerId <= 0 || !Number.isInteger(manifest.containerId)) {
@@ -37,7 +27,7 @@ function validateManifest(manifest) {
 
   if (!("unit" in manifest)) {
     errors.unit = "Missing";
-  } else if (manifest.unit !== "kg") {
+  } else if (manifest.unit !== "kg" && manifest.unit !== "lb") {
     errors.unit = "Invalid";
   }
 
@@ -46,29 +36,27 @@ function validateManifest(manifest) {
   } else if (typeof manifest.hazmat !== "boolean") {
     errors.hazmat = "Invalid";
   }
-
   return errors;
-}
-
-/*
-เทส function validateManifest()
--------------------------
-const manifest1 = { containerId: 0, destination: 405, weight: -84, unit: "pounds", hazmat: "no" };
-
-console.log(validateManifest(manifest1));
-*/
-
+} //function validateManifest() คือการตรวจว่า input ต่างๆ valid หรือไม่
 
 function processManifest(manifest) {
-  if (manifest.) {
-
+  const containerId = manifest.containerId;
+  if (Object.keys(validateManifest(manifest)).length === 0) {
+    console.log(`Validation success: ${containerId}`);
+    console.log("Total weight: " + normalizeUnits(manifest).weight + " kg");
+  } else {
+    console.log(`Validation error: ${containerId}`);
+    console.log(validateManifest(manifest));
   }
-  else {console.log("Validation success: " + manifest.containerId);
-  console.log("Total weight: " + normalizeUnits(manifest).weight + " kg");}
+  return { ...manifest};
 }
+
+const manifest0 = { containerId: 1, destination: "Santa Cruz", weight: 304, unit: "kg", hazmat: false };
 
 const manifest1 = { containerId: 55, destination: "Carmel", weight: 400, unit: "lb", hazmat: false };
 
 const manifest2 = { containerId: -88, destination: "Soledad", weight: NaN };
 
-processManifest(manifest2);
+const manifest3 = { destination: "Watsonville", hazmat: true };
+
+processManifest(manifest1);
