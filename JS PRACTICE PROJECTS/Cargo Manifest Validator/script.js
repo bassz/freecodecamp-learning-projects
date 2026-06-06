@@ -58,11 +58,17 @@ const manifest1 = { containerId: 0, destination: 405, weight: -84, unit: "pounds
 console.log(validateManifest(manifest1));
 */
 
+
 function processManifest(manifest) {
-  console.log("Validation success: " + manifest.containerId);
-  
+  if (manifest.) {
+
+  }
+  else {console.log("Validation success: " + manifest.containerId);
+  console.log("Total weight: " + normalizeUnits(manifest).weight + " kg");}
 }
 
 const manifest1 = { containerId: 55, destination: "Carmel", weight: 400, unit: "lb", hazmat: false };
 
-console.log(processManifest(manifest1));
+const manifest2 = { containerId: -88, destination: "Soledad", weight: NaN };
+
+processManifest(manifest2);
