@@ -57,5 +57,11 @@ function planRestock(pantry, shipment) {
   return result;
 }
 
+function groupByZone (actions) {
+  const result = {};
+  for (let i = 0; i < actions.length; i++) {
+
+  }
+}
 
 console.log(parseShipment(rawData));
